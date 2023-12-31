@@ -1,14 +1,11 @@
-# NOTE: This docker-compose.yml is meant to be just an example guideline
-# on how you can achieve the same. It is not intented to run out of the box
-# and you must edit the below configurations to suit your needs.
-
 version: "3.7"
 
 x-app-defaults: &app-defaults
   restart: unless-stopped
   image: listmonk/listmonk:latest
-  ports:
-    - "80:80"
+  # //? Removes global port mapping 9000 and only serves the whole site through caddy reverse proxy
+  # ports:
+  #   - "9000:9000"
   networks:
     - listmonk
   environment:
@@ -48,21 +45,20 @@ services:
     volumes:
       - ./config.toml:/listmonk/config.toml
       - ./uploads:/listmonk/uploads
-  # //! The problem with caddy here is, the below port mapping is workign on 80:80 but it need to be 80:9000. Do check with that.
-  # caddy:
-  #   image: caddy:latest
-  #   restart: unless-stopped
-  #   container_name: caddy
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   volumes:
-  #     - ./containers/caddy/Caddyfile:/caddy/Caddyfile
-  #     - ./containers/caddy/site:/srv
-  #     - ./containers/caddy/caddy_data:/data
-  #     - ./containers/caddy/caddy_config:/config
-  #   networks:
-  #     - listmonk
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/site:/srv
+      - ./caddy/caddy_data:/data
+      - ./caddy/caddy_config:/config
+    networks:
+      - listmonk
 
 networks:
   listmonk:
@@ -70,3 +66,6 @@ networks:
 
 volumes:
   listmonk-data:
+  caddy_data:
+    external: true
+  caddy_config:

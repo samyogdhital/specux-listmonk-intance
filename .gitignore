@@ -1,3 +1,6 @@
 .vscode
-data/certbot/*
+
 uploads
+
+caddy/**
+!caddy/Caddyfile
