@@ -2,22 +2,22 @@
 # on how you can achieve the same. It is not intented to run out of the box
 # and you must edit the below configurations to suit your needs.
 
-version: '3.7'
+version: "3.7"
 
 x-app-defaults: &app-defaults
   restart: unless-stopped
   image: listmonk/listmonk:latest
   ports:
-    - '9000:9000'
+    - "9000:9000"
   networks:
     - listmonk
   environment:
-    - TZ=Etc/UTC
+    - TZ=Etc/EST
 
 x-db-defaults: &db-defaults
   image: postgres:13-alpine
   ports:
-    - '9432:5432'
+    - "9432:5432"
   networks:
     - listmonk
   environment:
@@ -26,7 +26,7 @@ x-db-defaults: &db-defaults
     - POSTGRES_DB=listmonk
   restart: unless-stopped
   healthcheck:
-    test: ['CMD-SHELL', 'pg_isready -U listmonk']
+    test: [ "CMD-SHELL", "pg_isready -U listmonk" ]
     interval: 10s
     timeout: 5s
     retries: 6
@@ -47,39 +47,25 @@ services:
       - db
     volumes:
       - ./config.toml:/listmonk/config.toml
-
-  nginx:
-    image: nginx:mainline-alpine
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./data/nginx:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    networks:
-      - listmonk
-    depends_on:
-      - app
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    container_name: certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    networks:
-      - listmonk
-    depends_on:
-      - nginx
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+      - ./uploads:/listmonk/uploads
+  # caddy:
+  #   image: caddy:latest
+  #   restart: unless-stopped
+  #   container_name: caddy
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   volumes:
+  #     - ./containers/caddy/Caddyfile:/caddy/Caddyfile
+  #     - ./containers/caddy/site:/srv
+  #     - ./containers/caddy/caddy_data:/data
+  #     - ./containers/caddy/caddy_config:/config
+  #   networks:
+  #     - listmonk
 
 networks:
   listmonk:
 
+
 volumes:
   listmonk-data:
-
