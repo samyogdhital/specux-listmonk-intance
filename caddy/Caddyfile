@@ -1,7 +1,0 @@
-{
-    email junkmail9869@gmail.com
-}
-
-mailing.specux.com {
-    reverse_proxy app:9000
-}

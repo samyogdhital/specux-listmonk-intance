@@ -3,9 +3,8 @@ version: "3.7"
 x-app-defaults: &app-defaults
   restart: unless-stopped
   image: listmonk/listmonk:latest
-  # //? Removes global port mapping 9000 and only serves the whole site through caddy reverse proxy
-  # ports:
-  #   - "9000:9000"
+  ports:
+    - "80:80"
   networks:
     - listmonk
   environment:
@@ -29,6 +28,7 @@ x-db-defaults: &db-defaults
     retries: 6
 
 services:
+
   db:
     <<: *db-defaults
     container_name: listmonk_db
@@ -45,20 +45,6 @@ services:
     volumes:
       - ./config.toml:/listmonk/config.toml
       - ./uploads:/listmonk/uploads
-  caddy:
-    image: caddy:latest
-    restart: unless-stopped
-    container_name: caddy
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./caddy/site:/srv
-      - ./caddy/caddy_data:/data
-      - ./caddy/caddy_config:/config
-    networks:
-      - listmonk
 
 networks:
   listmonk:
@@ -66,6 +52,3 @@ networks:
 
 volumes:
   listmonk-data:
-  caddy_data:
-    external: true
-  caddy_config:

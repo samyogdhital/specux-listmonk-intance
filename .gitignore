@@ -1,6 +1,2 @@
 .vscode
-
 uploads
-
-caddy/**
-!caddy/Caddyfile
