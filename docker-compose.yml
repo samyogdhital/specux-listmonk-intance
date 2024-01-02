@@ -36,6 +36,7 @@ services:
       - type: volume
         source: listmonk-data
         target: /var/lib/postgresql/data
+      - ./db_backups:/db_backups
 
   app:
     <<: *app-defaults
@@ -45,6 +46,7 @@ services:
     volumes:
       - ./config.toml:/listmonk/config.toml
       - ./uploads:/listmonk/uploads
+      - ./static:/listmonk/static
 
 networks:
   listmonk:
