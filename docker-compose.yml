@@ -28,7 +28,6 @@ x-db-defaults: &db-defaults
     retries: 6
 
 services:
-
   db:
     <<: *db-defaults
     container_name: listmonk_db
