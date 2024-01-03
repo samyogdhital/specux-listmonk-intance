@@ -43,6 +43,7 @@ services:
     container_name: listmonk_app
     depends_on:
       - db
+    command: "./listmonk --static-dir=/listmonk/static"
     volumes:
       - ./config.toml:/listmonk/config.toml
       - ./uploads:/listmonk/uploads
