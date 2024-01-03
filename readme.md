@@ -21,3 +21,7 @@
 
   3. After successful restore, do restart all the container with
   `docker compose down; docker compose up -d`
+
+
+ ## Change email template
+ If you change any of the email template, do restart the app container service with `docker-compose up --force-recreate -d app`
