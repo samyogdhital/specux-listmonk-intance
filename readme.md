@@ -47,4 +47,4 @@ After successful upgrade, do backup the db again for future upgrade
 
 
  ## Change email template
- If you change any of the email template, do restart the app container service with `docker compose up --force-recreate -d app`
+ If you change any of the email template, do restart the app container service with `docker compose down; docker compose up -d`
