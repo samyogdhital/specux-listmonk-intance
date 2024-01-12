@@ -30,7 +30,7 @@
 				{{ if ne .LogoURL "" }}
 					<img src="{{ .LogoURL }}" alt="{{ .Data.Title }}" /></a>
 				{{ else }}
-					<img src="/public/static/logo.svg?v={{ .AssetVersion }}" alt="{{ .Data.Title }}" />
+					<img src="/public/static/logo.png?v={{ .AssetVersion }}" alt="{{ .Data.Title }}" />
 				{{ end }}
 				</a>
 			</div>
@@ -40,9 +40,10 @@
 {{ define "footer" }}
 	</div>
 	
-	<footer class="container">
+	<!-- //! Footer code removed from template -->
+	<!-- <footer class="container">
 		{{ L.T "public.poweredBy" }} <a target="_blank" rel="noreferrer" href="https://listmonk.app">listmonk</a>
-	</footer>
+	</footer> -->
 </body>
 </html>
 {{ end }}
