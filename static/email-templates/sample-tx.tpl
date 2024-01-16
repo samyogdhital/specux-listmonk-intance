@@ -100,9 +100,5 @@
             see the transactional mailing <a href="https://listmonk.app/docs/transactional">documentation</a>.
         </p>
     </div>
-    
-    <div class="footer" style="text-align: center;font-size: 12px;color: #888;">
-        <p>{{ L.T "public.poweredBy" }} <a href="https://listmonk.app" target="_blank" rel="noreferrer" style="color: #888;">listmonk</a></p>
-    </div>
 </body>
 </html>
