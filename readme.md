@@ -29,6 +29,11 @@ After successful upgrade, do backup the db again for future upgrade
   ```
   pg_dump -W -F t listmonk > /db_backups/listmonk.tar
   ```
+  Here is the oneliner command for the above steps.
+  ```bash
+  docker exec -it <database container id here> sh -c "export PGUSER=listmonk && pg_dump -W -F t listmonk > /db_backups/listmonk.tar"
+  ```
+  If password is asked provide "9988".
 
   Your backups can be accessed on ___db_backups___ folder outside the container.
 
@@ -39,6 +44,12 @@ After successful upgrade, do backup the db again for future upgrade
   ```
   pg_restore -d listmonk -c /db_backups/listmonk.tar
   ```
+
+  Here is the oneliner code for above restore steps
+  ```bash
+  docker exec -it <database container id here> sh -c "export PGUSER=listmonk && pg_restore -d listmonk -c /db_backups/listmonk.tar"
+  ```
+
   __If you are doing for the first time, you may see a lot of erros in terminal but you can safely ignore them. ___(Your db is restored now.)_____
   If it is second then, just run once and you are fine.
 
