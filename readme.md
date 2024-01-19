@@ -27,11 +27,11 @@ After successful upgrade, do backup the db again for future upgrade
   2. Now you need to backup the db, since we already have the __db_backups__ folder outside the container and we have mapped it as volume in docker-compose, we can use __pg_dump__ command here.
   Enter the below command to output a .tar file as backup to db_backups folder. 
   ```
-  pg_dump -W -F t listmonk > /db_backups/listmonk.tar
+  pg_dump -F t listmonk > /db_backups/listmonk.tar
   ```
   Here is the oneliner command for the above steps.
   ```bash
-  docker exec -it <database container id here> sh -c "export PGUSER=listmonk && pg_dump -W -F t listmonk > /db_backups/listmonk.tar"
+  docker exec -it $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -F t listmonk > /db_backups/listmonk.tar"
   ```
   If password is asked provide "9988".
 
@@ -47,7 +47,7 @@ After successful upgrade, do backup the db again for future upgrade
 
   Here is the oneliner code for above restore steps
   ```bash
-  docker exec -it <database container id here> sh -c "export PGUSER=listmonk && pg_restore -d listmonk -c /db_backups/listmonk.tar"
+  docker exec -it $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_restore -d listmonk -c /db_backups/listmonk.tar"
   ```
 
   __If you are doing for the first time, you may see a lot of erros in terminal but you can safely ignore them. ___(Your db is restored now.)_____
@@ -61,7 +61,7 @@ After successful upgrade, do backup the db again for future upgrade
 Automatically backup and commit is done through cronjob.
 In terminal hit `crontab -c` and add the below line in it.
 ```bash
-0 0,8,16 * * * cd /home/ubuntu/listmonk && docker exec $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -W -F t listmonk > /db_backups/listmonk.tar" && git add /db_backups/listmonk.tar && git commit -m "backup: $(git rev-parse --short HEAD)" && git push origin main
+0 0,8,16 * * * cd /home/ubuntu/listmonk && (docker ps | grep $(docker compose ps -q db))  && docker exec $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -F t listmonk > /db_backups/listmonk.tar" && git add /db_backups/listmonk.tar && git commit -m "backup: $(git rev-parse --short HEAD)" && git push origin main
 ```
 This command will run 3 times a day in 8 hour time difference.
 
