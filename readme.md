@@ -61,7 +61,7 @@ After successful upgrade, do backup the db again for future upgrade
 Automatically backup and commit is done through cronjob.
 In terminal hit `crontab -c` and add the below line in it.
 ```bash
-0 0,8,16 * * * cd /home/ubuntu/listmonk && (docker ps | grep $(docker compose ps -q db))  && docker exec $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -F t listmonk > /db_backups/listmonk.tar" && git add /db_backups/listmonk.tar && git commit -m "backup: $(git rev-parse --short HEAD)" && git push origin main
+0 0,8,16 * * * cd /home/ubuntu/listmonk && docker exec $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -F t listmonk > /db_backups/listmonk.tar" && git add ./db_backups/listmonk.tar && git commit -m "backup: $(git rev-parse --short HEAD)" && git push origin main
 ```
 This command will run 3 times a day in 8 hour time difference.
 
