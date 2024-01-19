@@ -3,7 +3,7 @@
 2. Setup this new db for listmonk `docker compose run --rm app ./listmonk --install`.
 3. Go inside db container, restore the db with pg_restore 
 ```
-docker exec -it <db_container_id> sh
+docker exec -it $(docker compose ps -q db) sh
 export PGUSER=listmonk
 pg_restore -d listmonk -c /db_backups/listmonk.tar
 exit
@@ -20,7 +20,7 @@ After successful upgrade, do backup the db again for future upgrade
 ## Backup and Restore postgres database running in a container
 
 ### 1. Backup the database 
-  1. Go inside the container with `docker exec -it <database container id here> sh`
+  1. Go inside the container with `docker exec -it $(docker compose ps -q db) sh`
   
   2. Export default user `export PGUSER=listmonk` to avoid hitting ___-U listmonk___ in every postgres command
 
@@ -55,6 +55,15 @@ After successful upgrade, do backup the db again for future upgrade
 
   3. After successful restore, do restart all the container with
   `docker compose down; docker compose up -d`
+
+
+## Automatically Backup and Commit
+Automatically backup and commit is done through cronjob.
+In terminal hit `crontab -c` and add the below line in it.
+```bash
+0 0,8,16 * * * cd /home/ubuntu/listmonk && docker exec $(docker compose ps -q db) sh -c "export PGUSER=listmonk && pg_dump -W -F t listmonk > /db_backups/listmonk.tar" && git add /db_backups/listmonk.tar && git commit -m "backup: $(git rev-parse --short HEAD)" && git push origin main
+```
+This command will run 3 times a day in 8 hour time difference.
 
 
  ## Change email template
