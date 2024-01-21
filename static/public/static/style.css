@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+:root {
+  /* background color  */
+  --public-grey-background-backdrop: #a7a7a7;
+
+  /* button colors */
+  --yellow-brand-button-color: hsl(47.9, 95.8%, 53.1%);
+  --yellow-button-hover-color: hsl(48, 97%, 48%);
+
+  /* a tag color */
+  --atag-color: hsl(0, 0%, 0%);
+  --atag-hover-color: hsl(0, 0%, 27%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,18 +23,22 @@ body {
   min-width: 320px;
 }
 body {
-  background: #f9f9f9;
-  font-family: 'Inter', 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--public-grey-background-backdrop);
+  /* font-family: 'Inter', 'Open Sans', 'Helvetica Neue', sans-serif; */
+  font-family: 'Roboto', 'Inter', 'Helvetica Neue', 'Segoe UI', Helvetica,
+    sans-serif;
   font-size: 16px;
   line-height: 26px;
   color: #111;
 }
 a {
-  color: #0055d4;
-  text-decoration-color: #abcbfb;
+  color: var(--atag-color);
+  text-decoration-color: var(--atag-color);
+  text-underline-offset: 3px;
 }
 a:hover {
-  color: #111;
+  color: var(--atag-hover-color);
+  text-decoration-color: var(--atag-hover-color);
 }
 label {
   cursor: pointer;
@@ -58,6 +77,10 @@ input[disabled] {
   opacity: 0.5;
 }
 
+input[type='checkbox'] {
+  accent-color: var(--yellow-brand-button-color);
+}
+
 .center {
   text-align: center;
 }
@@ -65,21 +88,20 @@ input[disabled] {
   text-align: right;
 }
 .button {
-  background: #0055d4;
+  background: var(--yellow-brand-button-color);
+  color: black;
   padding: 15px 30px;
   border-radius: 3px;
   border: 0;
   cursor: pointer;
   text-decoration: none;
-  color: #ffff;
   display: inline-block;
   min-width: 150px;
   font-size: 1.1em;
   text-align: center;
 }
 .button:hover {
-  background: #333;
-  color: #fff;
+  background: var(--yellow-button-hover-color);
 }
 .button.button-outline {
   background: #fff;
