@@ -2,7 +2,7 @@ version: "3.7"
 
 x-app-defaults: &app-defaults
   restart: unless-stopped
-  image: listmonk/listmonk:v3.0.0-rc-7
+  image: listmonk/listmonk:latest
   ports:
     - "80:80"
   networks:
