@@ -3,11 +3,10 @@ version: "3.7"
 x-app-defaults: &app-defaults
   restart: unless-stopped
   image: listmonk/listmonk:latest
-  # ports:
-  #   - "2000"
+  ports:
+    - "2000"
   networks:
-    # - listmonk
-    - traefik
+    - nginx
   environment:
     - TZ=Etc/EST
 
@@ -16,7 +15,7 @@ x-db-defaults: &db-defaults
   ports:
     - "5432"
   networks:
-    - traefik
+    - nginx
   environment:
     - POSTGRES_PASSWORD=samyogdb
     - POSTGRES_USER=listmonk
@@ -48,15 +47,10 @@ services:
       - ./config.toml:/listmonk/config.toml
       - ./uploads:/listmonk/uploads
       - ./static:/listmonk/static
-    labels:
-      - "traefik.http.routers.listmonk_app.rule=Host(`mailing.specux.com`)"
-      - "traefik.http.services.listmonk_app.loadbalancer.server.port=2000"
 
 networks:
-  traefik:
+  nginx:
     external: true
-  # listmonk:
-
 
 volumes:
   listmonk-data:
